@@ -1,6 +1,7 @@
 package com.quickguru.service;
 
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
@@ -32,7 +33,8 @@ public class QuestionService {
 	private AnswerFileRepository answerFileRepository;
 	
 	public List<Question> getQuestionsByUserTag(Set<Tag> tags) {
-		return questionRepository.findAllByStatusAndTagIn(QStatus.APPROVED, tags);
+		Set<QStatus> status = EnumSet.of(QStatus.APPROVED, QStatus.ANSWERED);
+		return questionRepository.findAllByStatusInAndTagIn(status, tags);
 	}
 
 	public List<Question> getQuestionsSubmittedByUser(User user) {

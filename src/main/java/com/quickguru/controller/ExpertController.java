@@ -21,6 +21,7 @@ import com.quickguru.exception.RecordNotFoundException;
 import com.quickguru.model.Answer;
 import com.quickguru.model.AnswerFile;
 import com.quickguru.model.Question;
+import com.quickguru.model.Question.QStatus;
 import com.quickguru.model.User;
 import com.quickguru.model.User.Role;
 import com.quickguru.repository.AnswerRepository;
@@ -77,6 +78,7 @@ public class ExpertController {
 			answerRepository.save(answer);
 			
 			question.setUpdatedOn(new Timestamp(System.currentTimeMillis()));
+			question.setStatus(QStatus.ANSWERED);
 			questionRepository.save(question);
 		} catch (Exception e) {
 			throw new QuickGuruException("**expertAnswerQuestion Exception**"+ e.getMessage());

@@ -18,6 +18,10 @@ import lombok.experimental.Accessors;
 @Entity
 public class Answer {
 	
+	public Answer() {
+		// default
+	}
+	
 	public Answer(Question question, AnswerFile aFile, User user) {
 		this.question = question;
 		this.file = aFile;

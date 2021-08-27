@@ -37,8 +37,14 @@ public class Question {
 	public Question() {
 	}
 
+	public Question(long id) {
+		this.id = id;
+	}
+
 	public enum QStatus {
-		SUBMITTED("SUBMITTED"), PENDING_APPROVAL("PENDING_APPROVAL"), APPROVED("APPROVED"), REJECTED("REJECTED");
+		SUBMITTED("SUBMITTED"), APPROVED("APPROVED"), REJECTED("REJECTED"), ANSWERED("ANSWERED");
+		
+		// ADD ANSWERED
 	   
 	    private final String code;
 

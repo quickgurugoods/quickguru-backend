@@ -18,6 +18,7 @@ import com.quickguru.model.User;
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
+	List<Question> findAllByStatusInAndTagIn(Set<QStatus> status, Set<Tag> tags);
 	List<Question> findAllByStatusAndTagIn(QStatus approved, Set<Tag> tags);
 
 	List<Question> findAllByCreatedBy(User user);
