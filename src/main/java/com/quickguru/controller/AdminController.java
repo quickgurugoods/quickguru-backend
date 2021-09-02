@@ -2,6 +2,7 @@ package com.quickguru.controller;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,7 +45,7 @@ public class AdminController {
 		} else if(!Role.ADMIN.equals(user.getRole())) {
 			throw new QuickGuruException("**Role mismatch at getAllSubmittedQuestions: " + email);
 		} else {
-			questions = questionRepository.findAllByStatus(QStatus.SUBMITTED);
+			questions = questionRepository.findAllByStatusOrderByUpdatedOnDesc(QStatus.SUBMITTED);
 		}
 	    return new ResponseEntity<>(questions, HttpStatus.OK);
 	}
@@ -64,6 +66,30 @@ public class AdminController {
 			}
 		} catch (Exception e) {
 			throw new QuickGuruException("**actionToQuestionByAdmin Exception**"+ e.getMessage());
+		}
+	    return ResponseEntity.ok(HttpStatus.OK);
+	}
+	
+	@PutMapping("/question/{quesion-id}/{title}")
+	@Transactional
+	public ResponseEntity<HttpStatus> updateQuestionNameByAdmin(@PathVariable("quesion-id") long questionId, @PathVariable("title") String title, 
+					@RequestHeader("email") String email)  throws QuickGuruException {
+		try {
+			User user = userRepository.findByEmail(email);
+			if(user == null) {
+				throw new RecordNotFoundException("Enable: No user found for updateQuestionNameByAdmin Question: " + questionId);
+			} else if(!Role.ADMIN.equals(user.getRole())) {
+				throw new QuickGuruException("**Role mismatch at updateQuestionNameByAdmin: " + email);
+			} else {
+				Optional<Question> questions = questionRepository.findById(questionId);
+				if(!questions.isEmpty()) {
+					Question question = questions.get();
+					question.setTitle(title);
+					questionRepository.save(question);
+				}
+			}
+		} catch (Exception e) {
+			throw new QuickGuruException("**updateQuestionNameByAdmin Exception**"+ e.getMessage());
 		}
 	    return ResponseEntity.ok(HttpStatus.OK);
 	}

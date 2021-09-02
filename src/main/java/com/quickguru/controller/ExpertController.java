@@ -45,19 +45,51 @@ public class ExpertController {
 	@Autowired
 	private UserRepository userRepository;
 	
-	@GetMapping(value = "/my-answers") 
-	public ResponseEntity<List<Question>> getAnsweredQuestions(@RequestHeader("email") String email) throws QuickGuruException
+//	@GetMapping(value = "/my-answers") 
+//	public ResponseEntity<List<Question>> getAnsweredQuestions(@RequestHeader("email") String email) throws QuickGuruException
+//	{
+//		List<Question> questions = null;
+//		User user = userRepository.findByEmail(email);
+//		if(user == null) {
+//			throw new RecordNotFoundException("**No user found at getAnsweredQuestions: " + email);
+//		} else if(!Role.EXPERT.equals(user.getRole())) {
+//			throw new QuickGuruException("**Role mismatch at getAnsweredQuestions: " + email);
+//		} else {
+//			questions = questionService.getExpertQuestions(user);
+//		}
+//	    return new ResponseEntity<>(questions, HttpStatus.OK);
+//	}
+	
+	@GetMapping(value = "/questions/{category}") 
+	public ResponseEntity<List<Question>> getExpertQuestionsByCategory(@RequestHeader("email") String email, @PathVariable("category") String category) throws QuickGuruException
 	{
 		List<Question> questions = null;
 		User user = userRepository.findByEmail(email);
 		if(user == null) {
-			throw new RecordNotFoundException("**No user found at getAnsweredQuestions: " + email);
+			throw new RecordNotFoundException("**No user found at getExpertQuestionsByCategory: " + email);
 		} else if(!Role.EXPERT.equals(user.getRole())) {
-			throw new QuickGuruException("**Role mismatch at getAnsweredQuestions: " + email);
+			throw new QuickGuruException("**Role mismatch at getExpertQuestionsByCategory: " + email);
+		} else if("ANSWERED".equalsIgnoreCase(category)){
+			questions = questionService.getExpertAnsweredQuestions(user);
 		} else {
-			questions = questionService.getExpertQuestions(user);
+			questions = questionService.getExpertUnAnsweredQuestions(user);
 		}
 	    return new ResponseEntity<>(questions, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/user/{id}") 
+	public ResponseEntity<User> getUserTags(@PathVariable("id") long userId)
+	{
+		User user = null;
+		Optional<User> users = userRepository.findById(userId);
+		if(users.isEmpty()) {
+			throw new RecordNotFoundException("**No user found at getUserTags by Experts User id: " + userId);
+		} else {
+			user = users.get();
+			user.getTags().iterator();
+			user.getLanguages().iterator();
+		}
+	    return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 	
 	@PostMapping(value="/answer/{question-id}")

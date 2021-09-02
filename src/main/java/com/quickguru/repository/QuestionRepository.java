@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.quickguru.model.Language;
 import com.quickguru.model.Question;
 import com.quickguru.model.Question.QStatus;
 import com.quickguru.model.Tag;
@@ -18,14 +19,14 @@ import com.quickguru.model.User;
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
-	List<Question> findAllByStatusInAndTagIn(Set<QStatus> status, Set<Tag> tags);
-	List<Question> findAllByStatusAndTagIn(QStatus approved, Set<Tag> tags);
+	List<Question> findAllByStatusInAndTagInAndLanguageInOrderByUpdatedOnDesc(Set<QStatus> status, Set<Tag> tags, Set<Language> languages);
+	List<Question> findAllByStatusAndTagInAndLanguageInOrderByUpdatedOnDesc(QStatus approved, Set<Tag> tags, Set<Language> languages);
 
-	List<Question> findAllByCreatedBy(User user);
+	List<Question> findAllByCreatedByOrderByUpdatedOnDesc(User user);
 
-	List<Question> findAllByStatus(QStatus submitted);
+	List<Question> findAllByStatusOrderByUpdatedOnDesc(QStatus submitted);
 	
-	@Query("Select q from Answer a JOIN a.question q ON a.question=q WHERE a.createdBy=:expertUser")
+	@Query("Select q from Answer a JOIN a.question q ON a.question=q WHERE a.createdBy=:expertUser order by q.updatedOn desc")
 	public List<Question> fetchExpertAnsweredQuestions(@Param("expertUser") User expertUser);
 	
 	@Modifying

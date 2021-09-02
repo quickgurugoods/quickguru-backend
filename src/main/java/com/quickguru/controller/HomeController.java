@@ -39,7 +39,7 @@ public class HomeController {
 		if(user == null) {
 			throw new RecordNotFoundException("**No user found at getUserTaggedQuestions: " + email);
 		} else if(!user.getTags().isEmpty()) {
-			questions = questionService.getQuestionsByUserTag(user.getTags());
+			questions = questionService.getQuestionsByUserTag(user);
 		}
 	    return new ResponseEntity<>(questions, HttpStatus.OK);
 	}

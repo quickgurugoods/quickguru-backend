@@ -93,17 +93,7 @@ public class QuestionController {
 	    return ResponseEntity.ok(HttpStatus.OK);
 	}
 	
-//	@GetMapping(value = "/q-file/{id}") 
-//	public ResponseEntity<QuestionFile> getQuestionFileById(@PathVariable("id") long id)
-//	{
-//		QuestionFile qFile = new QuestionFile();
-//		Optional<QuestionFile> qFiles = questionFileRepository.findById(id);
-//		if(qFiles.isPresent()) {
-//			qFile = qFiles.get();
-//		}
-//	    return new ResponseEntity<>(qFile, HttpStatus.OK);
-//	}
-	
+
 	@GetMapping("/q-file/{id}")
     public ResponseEntity<Resource> downloadQuestionFile(@PathVariable long id) {
 		QuestionFile qFile = new QuestionFile();
@@ -117,16 +107,6 @@ public class QuestionController {
                 .body(new ByteArrayResource(qFile.getData()));
     }
 	
-//	@GetMapping(value = "/a-file/{id}") 
-//	public ResponseEntity<AnswerFile> getAnswerFileById(@PathVariable("id") long id)
-//	{
-//		AnswerFile aFile = new AnswerFile();
-//		Optional<AnswerFile> aFiles = answerFileRepository.findById(id);
-//		if(aFiles.isPresent()) {
-//			aFile = aFiles.get();
-//		}
-//	    return new ResponseEntity<>(aFile, HttpStatus.OK);
-//	}
 	
 	@GetMapping("/a-file/{id}")
     public ResponseEntity<Resource> downloadAnswerFile(@PathVariable long id) {
