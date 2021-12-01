@@ -10,44 +10,42 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import com.quickguru.dto.FeedbackDTO;
+
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 @Accessors(chain = true)
 @Data
 @Entity
-public class Answer {
+public class Feedback {
 	
-	public Answer() {
-		// default
-	}
-	
-	public Answer(Question question, AnswerFile aFile, User user) {
-		this.question = question;
-		this.file = aFile;
-		this.createdBy = user;
-		this.createdOn = new Timestamp(System.currentTimeMillis());
+	public Feedback() {
+		// Default constructor
 	}
 
-	public Answer(long answerId) {
-		this.id = answerId;
+	public Feedback(FeedbackDTO feedbackDTO, User user) {
+		this.comment = feedbackDTO.getComment();
+		this.star = feedbackDTO.getStar();
+		this.createdBy = user;
+		this.createdOn = new Timestamp(System.currentTimeMillis());
+		this.answer = new Answer(feedbackDTO.getAnswerId());
 	}
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	private String comment;
+	private int star;
 	
 	@OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "file_id", nullable = false)
-	private AnswerFile file;
-	
-	@OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "question_id", nullable = false)
-	private Question question;
-	
-	@OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by", nullable = false)
+    @JoinColumn(name = "created_by")
 	private User createdBy;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "answer_id", nullable = false)
+	private Answer answer;
 	
 	private Timestamp createdOn;
 }
+

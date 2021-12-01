@@ -12,5 +12,6 @@ public class QuestionDTO {
 	private String title;
 	private Tag tag;
 	private Language language;
+	private boolean restricted;
 }
 

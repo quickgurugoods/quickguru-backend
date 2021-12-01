@@ -53,23 +53,4 @@ public class UserController {
 		}
 	}
 	
-//	@GetMapping(value = "/dashboard") 
-//	public ResponseEntity<User> getDashboard(@RequestHeader("email") String email)
-//	{
-//		try {
-//			// Questions by status 
-//			// questions by tags
-//			// Questions by Languague
-//			
-//			English 20 -> Languague
-//			College 30 -> Tags
-//			SUBMITTED 20 -> Status
-//			
-//			
-//		} catch (Exception e) {
-//			throw new QuickGuruException("**getDashboard Exception**"+ e.getMessage());
-//		}
-//	    return new ResponseEntity<>(null, HttpStatus.OK);
-//	}
-	
 }

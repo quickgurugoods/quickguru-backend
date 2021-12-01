@@ -2,6 +2,8 @@ package com.quickguru.model;
 
 import java.sql.Timestamp;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -29,6 +31,7 @@ public class Question {
 		this.tag = questionDTO.getTag();
 		this.language = questionDTO.getLanguage();
 		this.createdBy = user;
+		this.restricted = questionDTO.isRestricted();
 		
 		this.createdOn = new Timestamp(System.currentTimeMillis());
 		this.updatedOn = new Timestamp(System.currentTimeMillis());
@@ -62,7 +65,8 @@ public class Question {
 	private Long id;
 	private String title;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@Basic(fetch = FetchType.LAZY)
+	@OneToOne
     @JoinColumn(name = "file_id")
 	private QuestionFile file;
 	
@@ -89,6 +93,9 @@ public class Question {
 	private User approvedBy;
 	
 	private Timestamp approvedOn;
+	
+	@Column(name="is_private")
+	private boolean restricted;
 	
 }
 

@@ -33,7 +33,7 @@ public class QuestionService {
 	
 	public List<Question> getQuestionsByUserTag(User user) {
 		Set<QStatus> status = EnumSet.of(QStatus.APPROVED, QStatus.ANSWERED);
-		return questionRepository.findAllByStatusInAndTagInAndLanguageInOrderByUpdatedOnDesc(status, user.getTags(), user.getLanguages());
+		return questionRepository.findAllQuestionsByUserPreferences(status, user.getTags(), user.getLanguages(), user);
 	}
 
 	public List<Question> getQuestionsSubmittedByUser(User user) {
